@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compatibility Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .question {
+            margin: 15px 0;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .button:hover {
+            background-color: #4cae4c;
+        }
+
+        .result, .summary {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compatibility Quiz</h1>
+        <div id="quiz">
+            <div class="question">
+                <p>1. How do you feel about traveling?</p>
+                <input type="radio" name="q1" value="10"> Love it
+                <input type="radio" name="q1" value="5"> Like it
+                <input type="radio" name="q1" value="0"> Dislike it
+            </div>
+            <div class="question">
+                <p>2. Do you enjoy cooking?</p>
+                <input type="radio" name="q2" value="10"> Yes
+                <input type="radio" name="q2" value="5"> Sometimes
+                <input type="radio" name="q2" value="0"> No
+            </div>
+            <div class="question">
+                <p>3. How do you feel about pets?</p>
+                <input type="radio" name="q3" value="10"> Love them
+                <input type="radio" name="q3" value="5"> Neutral
+                <input type="radio" name="q3" value="0"> Dislike them
+            </div>
+            <div class="question">
+                <p>4. Are you a morning person?</p>
+                <input type="radio" name="q4" value="10"> Yes
+                <input type="radio" name="q4" value="5"> Sometimes
+                <input type="radio" name="q4" value="0"> No
+            </div>
+            <div class="question">
+                <p>5. How do you feel about outdoor activities?</p>
+                <input type="radio" name="q5" value="10"> Love them
+                <input type="radio" name="q5" value="5"> Like them
+                <input type="radio" name="q5" value="0"> Dislike them
+            </div>
+            <button class="button" id="submitBtn">Calculate Compatibility</button>
+            <div class="error" id="errorMsg"></div>
+        </div>
+        <div class="result" id="result">
+            <h2>Your Total Compatibility Score: <span id="totalScore"></span></h2>
+            <h3>Overall Compatibility Percentage: <span id="percentageScore"></span>%</h3>
+            <p id="closingRemark"></p>
+            <div id="individualSummary"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let totalScore = 0;
+            const totalQuestions = 5;
+            let individualScores = [];
+            let errorMsg = '';
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const answer = document.querySelector(`input[name="q${i}"]:checked`);
+                if (answer) {
+                    const score = parseInt(answer.value);
+                    individualScores.push(`Question ${i}: ${score}`);
+                    totalScore += score;
+                } else {
+                    errorMsg += `Please answer question ${i}.<br>`;
+                }
+            }
+
+            if (errorMsg) {
+                document.getElementById('errorMsg').innerHTML = errorMsg;
+                return;
+            } else {
+                document.getElementById('errorMsg').innerHTML = '';
+            }
+
+            const compatibilityPercentage = (totalScore / (totalQuestions * 10)) * 100;
+            document.getElementById('totalScore').textContent = totalScore;
+            document.getElementById('percentageScore').textContent = compatibilityPercentage.toFixed(2);
+            document.getElementById('individualSummary').innerHTML = individualScores.join('<br>');
+
+            let remark;
+            if (compatibilityPercentage >= 80) {
+                remark = "Excellent compatibility! You're a perfect match!";
+            } else if (compatibilityPercentage >= 50) {
+                remark = "Good compatibility! You have some common interests!";
+            } else {
+                remark = "Compatibility is low. Consider exploring each other's preferences!";
+            }
+
+            document.getElementById('closingRemark').textContent = remark;
+            document.getElementById('result').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
